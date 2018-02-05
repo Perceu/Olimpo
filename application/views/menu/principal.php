@@ -97,7 +97,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestão de pagamentos<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="<?php echo site_url("c_teste/enconstrucao")?>">Dashboard</a></li>
+            <li><a href="<?php echo site_url("c_dash_pagamentos")?>">Dashboard</a></li>
             <li><a href="<?php echo site_url("c_empresa/listar")?>">Empresas</a></li>
             <li><a href="<?php echo site_url("c_carne_empresa/gerenciador")?>">Carnes</a></li>
           </ul>

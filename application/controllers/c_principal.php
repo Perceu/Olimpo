@@ -10,7 +10,6 @@ class c_principal extends CI_Controller {
             $this->load->view('head/head');
             $this->load->view('menu/principal');
             $data['carnesVencidos'] = $this->m_carnes->buscaVencidos();
-            $data['aniversariantes'] = $this->m_alunos->buscaAniversariantes();
             $this->load->view('principal/index',$data);
             $this->load->view('footer/footer');   
         }else{

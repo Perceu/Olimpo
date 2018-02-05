@@ -140,7 +140,7 @@ class m_carnes_empresa extends CI_Model {
                     *
                 FROM empresas_carnes 
                 inner join empresas on empresas_carnes.empId = empresas.empid
-                where ecVencimento <= CURDATE() and ecPago = 0";
+                where ecVencimento <= DATE_ADD(CURDATE(), INTERVAL 7 DAY) and ecPago = 0";
         $result = $this->db->query($sql);
         return $result->result();
     }
