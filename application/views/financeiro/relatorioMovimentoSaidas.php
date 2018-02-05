@@ -1,3 +1,32 @@
+<?php 
+  $total_mes = 0;
+  $table_mes = "";
+  foreach ($movimentosMes as $alunos) {
+      $table_mes .= "<tr>";
+      $table_mes .= "<td>".date("d/m/Y",strtotime($alunos->rsData))."</td>";
+      $table_mes .= "<td>".$alunos->turNome."</td>";
+      $table_mes .= "<td>$alunos->rsDescricao</td>";
+      $table_mes .= "<td>$alunos->rcNome</td>";
+      $table_mes .= "<td>R$ ".number_format($alunos->rsValor,2,',','.')."</td>";
+      $table_mes .= "<td><a href=".site_url('c_financeiro/editarSaida/'.$alunos->rsId)." class='button tiny'>Editar</a></td>";
+      $total_mes += $alunos->rsValor;
+  }
+
+  $total_dia = 0;
+  $table_dia = "";
+  foreach ($movimentosDia as $row) {
+      $table_dia .= "<tr>";
+      $table_dia .= "<td>".date("d/m/Y",strtotime($row->rsData))."</td>";
+      $table_dia .= "<td>".$row->turNome."</td>";
+      $table_dia .= "<td>$row->rsDescricao</td>";
+      $table_dia .= "<td>$row->rcNome</td>";
+      $table_dia .= "<td>R$ ".number_format($row->rsValor,2,',','.')."</td>";
+      $table_dia .= "<td><a href=".site_url('c_financeiro/editarSaida/'.$row->rsId)." class='button tiny'>Editar</a></td>";
+      $table_dia .= "</tr>" ;
+      $total_dia +=$row->rsValor;
+  }
+?>  
+
 <style type="text/css">
   .label{
     margin-left: 3px;
@@ -47,6 +76,16 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="dia">
+      <div class="row">
+        <div class="col-lg-8 col-md-6">
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="alert alert-info" role="alert">
+            <strong>Total Saidas</strong><br>
+            R$ <?=number_format($total_dia,2,',','.')?>
+          </div>
+        </div>
+      </div>
       <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
@@ -57,6 +96,7 @@
             <thead>
               <tr>
                 <th>Data</th>
+                <th>Turno</th>
                 <th>Descrição</th>
                 <th>Categoria</th>
                 <th>Valor</th>
@@ -64,23 +104,7 @@
               </tr>
             </thead>
             <tbody>
-                <?php 
-                  $total = 0;
-                  foreach ($movimentosDia as $row) {
-                      echo "<tr>";
-                      echo "<td>".date("d/m/Y",strtotime($row->rsData))."</td>";
-                      echo "<td>$row->rsDescricao</td>";
-                      echo "<td>$row->rcNome</td>";
-                      echo "<td>R$ ".number_format($row->rsValor,2,',','.')."</td>";
-                      echo "<td><a href=".site_url('c_financeiro/editarSaida/'.$row->rsId)." class='button tiny'>Editar</a></td>";
-                      echo "</tr>" ;
-                      $total +=$row->rsValor;
-                  }
-                  echo "<tr>";
-                  echo "<td colspan='4'>Total</td>";
-                  echo "<td>R$ ".number_format($total,2,',','.')."</td>";
-                  echo "</tr>" ;
-                ?>  
+                <?=$table_dia?>
             </tbody>
           </table>
         </div>
@@ -88,21 +112,33 @@
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="mes">
+      <div class="row">
+        <div class="col-lg-8 col-md-6">
+          <canvas id="gastosPorCategoria"></canvas>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="alert alert-info" role="alert">
+            <strong>Total Saidas</strong><br>
+            R$ <?=number_format($total_mes,2,',','.')?>
+          </div>
+        </div>
+      </div>
       ﻿<div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
           <h2 class="panel-title pull-left">Saidas do mês - <?php echo $conta[0]->conNome; ?></h2>
         </div>
         <div class="panel-body ">
+        <div class="row">
           <?php  
-            foreach ($movimentosPorCategoria as $row){
-              echo '<span class="label label-default">'.$row->rcNome.' - R$'.number_format($row->valor,2,',','.').'</span>';
-            }
+            echo '<div class="hide" id="json-pie">'.json_encode($movimentosPorCategoria).'</span>';
           ?>
-          <table class="table table-hover">
+          </div>
+          <table class="table table-hover dataTables">
             <thead>
               <tr>
                 <th>Data</th>
+                <th>Turno</th>
                 <th>Descrição</th>
                 <th>Categoria</th>
                 <th>Valor</th>
@@ -110,28 +146,38 @@
               </tr>
             </thead>
             <tbody>
-                <?php 
-                  $total = 0;
-                  foreach ($movimentosMes as $alunos) {
-                      echo "<tr>";
-                      echo "<td>".date("d/m/Y",strtotime($alunos->rsData))."</td>";
-                      echo "<td>$alunos->rsDescricao</td>";
-                      echo "<td>$alunos->rcNome</td>";
-                      echo "<td>R$ ".number_format($alunos->rsValor,2,',','.')."</td>";
-                      echo "<td><a href=".site_url('c_financeiro/editarSaida/'.$alunos->rsId)." class='button tiny'>Editar</a></td>";
-                      $total +=$alunos->rsValor;
-                  }
-                  echo "<tr>";
-                  echo "<td colspan='4'>Total</td>";
-                  echo "<td>R$ ".number_format($total,2,',','.')."</td>";
-                  echo "</tr>" ;
-                ?>  
+              <?=$table_mes?>
             </tbody>
           </table>
         </div>
       </div>
       </div>
   </div>
+</div>
+</div>
+<script>
 
-</div>
-</div>
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+var ctx = document.getElementById('gastosPorCategoria').getContext('2d');
+console.log($('#json-pie').html());
+var infos = JSON.parse($('#json-pie').html());
+var data = {labels: Array(), datasets: [{data:Array(), backgroundColor:Array()}]}
+infos.forEach(function(element){
+  data.labels.push(element.rcNome);
+  data.datasets[0].data.push(element.valor);
+  data.datasets[0].backgroundColor.push(getRandomColor());
+})
+console.log(data);
+var myPieChart = new Chart(ctx,{
+    type: 'pie',
+    data: data
+});
+</script>

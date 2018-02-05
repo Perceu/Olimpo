@@ -11,6 +11,17 @@
         <div class="form-group col-md-12">
             <label for="nome">Nome</label>
             <input type="text" class="form-control" name="conNome" value="<?php echo $contas[0]->conNome ?>" id="nome" placeholder="Nome" autofocus>
+        </div>        
+        <div class="form-group col-md-12">
+            <label class="radio-inline">
+              Mostrar no resumo:
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="conMostraResumo" value="1" <?php $contas[0]->conNome?'checked=""':'' ?> > Sim
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="conMostraResumo" value="0" <?php $contas[0]->conNome?'':'checked=""' ?>> não
+            </label>
         </div>
         </div>
         <a href="<?php echo site_url("c_contas/listar")?>" class="btn btn-default">Cancelar</a>

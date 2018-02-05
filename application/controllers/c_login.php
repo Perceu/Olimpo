@@ -19,8 +19,8 @@ class c_login extends CI_Controller{
         if (count($users)>0){
             $this->session->set_userdata('Ativo',true);
             $this->session->set_userdata('Nome',$users[0]->usuNome);
-            $this->session->set_userdata('Conta',$users[0]->conId);
             $this->session->set_userdata('Perfil',$users[0]->perId);
+            $this->session->set_userdata('Conta',$users[0]->conId);
         }else{
             $this->session->set_flashdata(array('Usuario ou senha invalida!'));
         }

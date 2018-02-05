@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `olimpo` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `olimpo`;
--- MySQL dump 10.13  Distrib 5.6.28, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.21, for Linux (x86_64)
 --
--- Host: localhost    Database: olimpo
+-- Host: localhost    Database: Infox
 -- ------------------------------------------------------
--- Server version	5.6.28-0ubuntu0.15.10.1
+-- Server version	5.7.21-0ubuntu0.17.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,43 +16,44 @@ USE `olimpo`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `clientes`
+-- Table structure for table `alunos`
 --
 
-DROP TABLE IF EXISTS `clientes`;
+DROP TABLE IF EXISTS `alunos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `clientes` (
-  `cliid` int(11) NOT NULL AUTO_INCREMENT,
-  `cliNome` varchar(100) NOT NULL,
-  `cliMatricula` varchar(100) NOT NULL,
-  `cliNascimento` datetime NOT NULL,
-  `cliTelefone1` varchar(20) NOT NULL,
-  `cliTelefone2` varchar(20) NOT NULL,
-  PRIMARY KEY (`cliid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `alunos` (
+  `aluid` int(11) NOT NULL AUTO_INCREMENT,
+  `aluNome` varchar(100) NOT NULL,
+  `aluMatricula` varchar(100) NOT NULL,
+  `aluNascimento` datetime NOT NULL,
+  `aluTelefone1` varchar(20) NOT NULL,
+  `aluTelefone2` varchar(20) NOT NULL,
+  PRIMARY KEY (`aluid`)
+) ENGINE=InnoDB AUTO_INCREMENT=677 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `clientes_carnes`
+-- Table structure for table `alunos_carnes`
 --
 
-DROP TABLE IF EXISTS `clientes_carnes`;
+DROP TABLE IF EXISTS `alunos_carnes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `clientes_carnes` (
+CREATE TABLE `alunos_carnes` (
   `carId` int(11) NOT NULL AUTO_INCREMENT,
   `carNum` int(11) NOT NULL,
   `carParcela` int(11) NOT NULL,
-  `cliId` int(11) NOT NULL,
-  `carDescricao` varchar(250) NOT NULL,
+  `aluId` int(11) NOT NULL,
+  `curId` int(11) NOT NULL,
   `carVencimento` datetime NOT NULL,
   `carValor` decimal(10,2) NOT NULL,
-  `carValorVencido` decimal(10,2) NOT NULL,
-  `carPago` tinyint(1) NOT NULL,
-  `reId` int(11) NOT NULL,
+  `carValorVencido` decimal(10,2) DEFAULT '0.00',
+  `carPago` tinyint(1) NOT NULL DEFAULT '0',
+  `reId` int(11) DEFAULT '0',
+  `carInativo` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`carId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10048 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,47 +65,80 @@ DROP TABLE IF EXISTS `contas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contas` (
   `conId` int(11) NOT NULL AUTO_INCREMENT,
-  `conNome` varchar(45) NOT NULL,
+  `conNome` varchar(200) NOT NULL,
+  `conMostraResumo` tinyint(1) NOT NULL,
   PRIMARY KEY (`conId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `fornecedores`
+-- Table structure for table `cursos`
 --
 
-DROP TABLE IF EXISTS `fornecedores`;
+DROP TABLE IF EXISTS `cursos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `fornecedores` (
-  `forid` int(11) NOT NULL AUTO_INCREMENT,
-  `forNome` varchar(100) NOT NULL,
-  `forTelefone1` varchar(20) NOT NULL,
-  `forTelefone2` varchar(20) NOT NULL,
-  PRIMARY KEY (`forid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `cursos` (
+  `curId` int(11) NOT NULL AUTO_INCREMENT,
+  `curNome` varchar(150) NOT NULL,
+  `curCursos` longtext NOT NULL,
+  `curConteudo` longtext NOT NULL,
+  `curCargHora` double NOT NULL,
+  PRIMARY KEY (`curId`)
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `fornecedores_carnes`
+-- Table structure for table `empresas`
 --
 
-DROP TABLE IF EXISTS `fornecedores_carnes`;
+DROP TABLE IF EXISTS `empresas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `fornecedores_carnes` (
-  `fcId` int(11) NOT NULL AUTO_INCREMENT,
-  `fcNum` int(11) NOT NULL,
-  `fcParcela` int(11) NOT NULL,
-  `forId` int(11) NOT NULL,
-  `fcDescricao` varchar(100) NOT NULL,
-  `fcVencimento` datetime NOT NULL,
-  `fcValor` decimal(10,2) NOT NULL,
-  `fcValorVencido` decimal(10,2) NOT NULL,
-  `fcPago` tinyint(1) NOT NULL,
-  `rsId` int(11) NOT NULL,
-  PRIMARY KEY (`fcId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `empresas` (
+  `empid` int(11) NOT NULL AUTO_INCREMENT,
+  `empNome` varchar(100) NOT NULL,
+  `empTelefone1` varchar(20) NOT NULL,
+  `empTelefone2` varchar(20) NOT NULL,
+  PRIMARY KEY (`empid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `empresas_carnes`
+--
+
+DROP TABLE IF EXISTS `empresas_carnes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `empresas_carnes` (
+  `ecId` int(11) NOT NULL AUTO_INCREMENT,
+  `ecNum` int(11) NOT NULL,
+  `ecParcela` int(11) NOT NULL,
+  `empId` int(11) NOT NULL,
+  `ecDescricao` varchar(255) NOT NULL,
+  `ecVencimento` datetime NOT NULL,
+  `ecValor` decimal(10,2) NOT NULL,
+  `ecValorVencido` decimal(10,2) NOT NULL,
+  `ecPago` tinyint(1) NOT NULL DEFAULT '0',
+  `rsId` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ecId`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `instrutores`
+--
+
+DROP TABLE IF EXISTS `instrutores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `instrutores` (
+  `insId` int(11) NOT NULL AUTO_INCREMENT,
+  `insNome` varchar(255) NOT NULL,
+  `insAssinatura` varchar(255) NOT NULL,
+  PRIMARY KEY (`insId`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,8 +152,9 @@ CREATE TABLE `registrocategorias` (
   `rcId` int(11) NOT NULL AUTO_INCREMENT,
   `rcNome` varchar(50) NOT NULL,
   `rcSaida` tinyint(1) NOT NULL DEFAULT '0',
+  `rcDescontaCaixa` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`rcId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +173,7 @@ CREATE TABLE `registroentradas` (
   `conId` int(11) NOT NULL,
   `turId` int(11) NOT NULL,
   PRIMARY KEY (`reId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7370 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,9 +190,25 @@ CREATE TABLE `registrosaidas` (
   `rsData` datetime NOT NULL,
   `rsCategoria` int(11) NOT NULL,
   `conId` int(11) NOT NULL,
-  `turId` varchar(45) NOT NULL,
+  `turId` int(11) NOT NULL,
   PRIMARY KEY (`rsId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1477 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `turnos`
+--
+
+DROP TABLE IF EXISTS `turnos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `turnos` (
+  `turId` int(11) NOT NULL AUTO_INCREMENT,
+  `turNome` varchar(50) NOT NULL,
+  `turIni` time(6) NOT NULL,
+  `turFim` time(6) NOT NULL,
+  PRIMARY KEY (`turId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,13 +220,12 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuarios` (
   `usuId` int(11) NOT NULL AUTO_INCREMENT,
-  `usuNome` varchar(45) NOT NULL,
-  `usuSenha` varchar(45) NOT NULL,
+  `usuNome` varchar(255) NOT NULL,
+  `usuSenha` varchar(100) NOT NULL,
   `conId` int(11) NOT NULL,
   `perId` int(11) NOT NULL,
-  PRIMARY KEY (`usuId`),
-  UNIQUE KEY `usuNome_UNIQUE` (`usuNome`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`usuId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -189,4 +237,4 @@ CREATE TABLE `usuarios` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-01 13:33:52
+-- Dump completed on 2018-02-05 19:07:48

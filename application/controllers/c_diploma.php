@@ -22,30 +22,41 @@ class c_diploma extends CI_Controller {
 
     public function imprimir()
 	{
+
             $this->load->library('mpdf');
             $this->mpdf->mPDF('utf-8', 'A4-L', 0, '', 2, 2, 2, 2, 0, 0, 'L');
             $this->load->model("m_curso");
+            $this->load->model("m_instrutor");
+            $instrutor = $this->m_instrutor->buscar($this->input->post('instrutor'));
+
             $curso = $this->m_curso->Buscar($this->input->post('curso'));
             //Fundo da pagina
-            $html ="<div style='height: 100%; background-image: url(http://localhost/infox/public/img/certificado_branco.png)'>";
-            //div do nome do candidato
-            $html = $html ."<div style='padding-top:300px; padding-left:135px'>"
+            $html ="<div style='height: 100%; background-image: url(".base_url('public/img/certificado_branco.png').")'>";
+                //div do nome do candidato
+            $html .= "<div style='padding-top:310px; padding-left:135px'>"
                     . "<span style='min-width:200px; background-color:#FFF; margin:0; padding:0; font-family: vibes;font-size:48px;'>"
                     . "".$this->input->post('nome').""
                     . "</span>"
                     . "</div>";
-            //div do curso
-            $html = $html ."<div style='padding-top:30px;padding-left:145px'>"
+                    //div do curso
+            $html .= "<div style='float:left;padding-top:30px;padding-left:145px'>"
                     . "<p style='margin:0;padding:0;font-family: robo;font-size:30px;'>"
                     . "".$curso[0]->curNome.""
                     . "</p>"
                     . "</div>";
+                    //div do instrutor
+                    if ($this->input->post('assinar')=='assinar'){
+                        $html .= "<div style='position:absolute;margin-left:650px;margin-top:-80px;'>
+                                    ".file_get_contents(base_url('public/img/assinaturas/'.$instrutor[0]->insAssinatura))."
+                                </div>";
+                    }
+                    //
             //div do instrutor
             $html = $html ."<div style='text-align: center;font-family: vibes;font-size:20px; padding-top:-35px; margin-left:680px; width:250px'>"
-                    . $this->input->post('instrutor')
+                    . $instrutor[0]->insNome
                     . "</div>";
             //div do div da carga Horaria
-            $html = $html ."<div style='padding-top: 16px; padding-left:145px'>"
+            $html = $html ."<div style='padding-top: 13px; padding-left:145px'>"
                     . "<p style='margin:0;padding:0;font-family: robo;font-size:30px;'>"
                     . "".$curso[0]->curCargHora.' horas'.""
                     . "</p>"
@@ -141,7 +152,7 @@ class c_diploma extends CI_Controller {
             $html = $html ."<table>";
             $html = $html ."<tr>";
             $html = $html   ."<td>";
-            $html = $html       ."<img src='http://localhost/infox/public/img/DepartamentoPessoal.png' height='50px'/>";
+            $html = $html       ."<img src='".base_url('/public/img/DepartamentoPessoal.jpg')."' height='50px'/>";
             $html = $html   ."</td>";
             $html = $html   ."<td style='width: 1100px;border: 1px solid #fff; font-family: robo;'>";
             $html = $html       ."Centro de Atendimento:<br>";
@@ -151,7 +162,7 @@ class c_diploma extends CI_Controller {
             $html = $html ."</tr>";
             $html = $html ."</table>";
 
-            
+            $this->mpdf->showImageErrors = true;
             $this->mpdf->WriteHTML($html);
             $this->mpdf->Output($this->input->post('nome').'.pdf','D');
         }

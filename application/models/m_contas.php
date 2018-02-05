@@ -6,6 +6,7 @@ class m_contas extends CI_Model {
         $this->load->database();
         $insert = array(
             'conNome' => $this->input->post('conNome'),
+            'conMostraResumo' => $this->input->post('conMostraResumo'),
         );
         
         if($this->db->update('contas',$insert,array('conId'=>$id))){
@@ -18,6 +19,7 @@ class m_contas extends CI_Model {
         $this->load->database();
         $insert = array(
             'conNome' => $this->input->post('conNome'),
+            'conMostraResumo' => $this->input->post('conMostraResumo'),
         );
         if($this->db->insert('contas',$insert)){
             return true;    

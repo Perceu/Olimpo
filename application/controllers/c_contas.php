@@ -41,8 +41,9 @@ class c_contas extends CI_Controller{
     public function salvar($id){
         $this->load->model('m_contas');
         $this->m_contas->salvar($id);        
-        $this->listar();
+        header("location:".site_url('c_contas/listar'));
     }
+
     public function gravar(){
         $this->load->model('m_contas');
         if($this->m_contas->gravar()){        

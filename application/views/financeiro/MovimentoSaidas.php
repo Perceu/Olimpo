@@ -24,7 +24,6 @@
         ?>
           <input name="dia" type="filtrar" value="<?php echo empty($date)?"":$date ?>" class="form-control tpData" id="filtro" placeholder="Data">
           <button onclick="filtroDate(event)" class="btn btn-default btn-sm">Filtrar</button>
-          <a href="<?php echo site_url('c_secretaria/registrarSaida') ?>" class="btn btn-default btn-sm">Nova Saida</a>
         </form>
       </div>
     </div>
@@ -51,12 +50,11 @@
             <thead>
               <tr>
                 <th>Data</th>
+                <th>Turno</th>
                 <th>Contas</th>
                 <th>Descrição</th>
                 <th>Categoria</th>
                 <th>Valor</th>
-                <th>Editar</th>
-
               </tr>
             </thead>
             <tbody>
@@ -65,11 +63,11 @@
                   foreach ($movimentosDia as $row) {
                       echo "<tr>";
                       echo "<td>".date("d/m/Y",strtotime($row->rsData))."</td>";
+                      echo "<td>".$row->turNome."</td>";
                       echo "<td>".$row->conNome."</td>";
                       echo "<td>$row->rsDescricao</td>";
                       echo "<td>$row->rcNome</td>";
                       echo "<td>R$ ".number_format($row->rsValor,2,',','.')."</td>";
-                      echo "<td><a href=".site_url('c_financeiro/editarSaida/'.$row->rsId)." class='button tiny'>Editar</a></td>";
                       echo "</tr>" ;
                       $total +=$row->rsValor;
                   }
@@ -91,20 +89,25 @@
           <h2 class="panel-title pull-left">Saidas do mês</h2>
         </div>
         <div class="panel-body ">
+          <div class="row">
           <?php  
             foreach ($movimentosPorCategoria as $row){
-              echo '<span class="label label-default">'.$row->rcNome.' - R$'.number_format($row->valor,2,',','.').'</span>';
+              
+              echo '<div class="col-md-3" style="padding-bottom: 1px;">';
+              echo '<span class=" label label-default">'.$row->rcNome.' - R$'.number_format($row->valor,2,',','.').'</span><br>';
+              echo '</div>';
             }
-          ?>
+            ?>
+          </div>
           <table class="table table-hover">
             <thead>
               <tr>
                 <th>Data</th>
+                <th>Turno</th>
                 <th>Contas</th>
                 <th>Descrição</th>
                 <th>Categoria</th>
                 <th>Valor</th>
-                <th>Editar</th>
               </tr>
             </thead>
             <tbody>
@@ -113,11 +116,11 @@
                   foreach ($movimentosMes as $alunos) {
                       echo "<tr>";
                       echo "<td>".date("d/m/Y",strtotime($alunos->rsData))."</td>";
+                      echo "<td>".$alunos->turNome."</td>";
                       echo "<td>".$alunos->conNome."</td>";
                       echo "<td>$alunos->rsDescricao</td>";
                       echo "<td>$alunos->rcNome</td>";
                       echo "<td>R$ ".number_format($alunos->rsValor,2,',','.')."</td>";
-                      echo "<td><a href=".site_url('c_financeiro/editarSaida/'.$alunos->rsId)." class='button tiny'>Editar</a></td>";
                       $total +=$alunos->rsValor;
                   }
                   echo "<tr>";

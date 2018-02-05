@@ -5,12 +5,12 @@ class c_principal extends CI_Controller {
 	public function index()
 	{
         if (isset($this->session->userdata['Ativo'])) {
-            $this->load->model('m_carnes_clientes');
-            $this->load->model('m_carnes_fornecedores');
+            $this->load->model('m_carnes');
+            $this->load->model('m_alunos');
             $this->load->view('head/head');
             $this->load->view('menu/principal');
-            $data['clientesVencidos'] = $this->m_carnes_clientes->buscaVencidos();
-            $data['fornecedoresVencidos'] = $this->m_carnes_fornecedores->buscaVencidos();
+            $data['carnesVencidos'] = $this->m_carnes->buscaVencidos();
+            $data['aniversariantes'] = $this->m_alunos->buscaAniversariantes();
             $this->load->view('principal/index',$data);
             $this->load->view('footer/footer');   
         }else{

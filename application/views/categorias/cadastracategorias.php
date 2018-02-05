@@ -1,3 +1,4 @@
+<div class="row">
 <div class="col-md-12">
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
@@ -13,14 +14,19 @@
         </div>
         </div>
         <div class="form-group">
+          <label for="nome">Tipo categoria</label> <br>
             <label class="radio-inline"><input type="radio" name="rcSaida" value="0">Entrada</label>
             <label class="radio-inline"><input type="radio" name="rcSaida" value="1">Saida</label> 
         </div>
-        <a href="<?php echo site_url("c_categorias/listar")?>" class="btn btn-default">Cancelar</a>
+        <div class="form-group">
+            <label for="nome">Considera no caixa</label> <br>
+            <label class="radio-inline"><input type="radio" name="rcDescontaCaixa" value="0" checked >Sim</label>
+            <label class="radio-inline"><input type="radio" name="rcDescontaCaixa" value="1">Não</label> 
+        </div>
+        <a href="<?php echo site_url("c_curso/listar")?>" class="btn btn-default">Cancelar</a>
         <button type="submit" class="btn btn-default">Salvar</button>
     </form>
   </div>
 </div>
 </div>
-﻿
-
+</div>

@@ -12,9 +12,11 @@ class c_secretaria extends CI_Controller {
 	public function registrarEntrada()
 	{
 		$this->load->model('m_categorias');
+		$this->load->model('m_turnos');
 		$this->load->model('m_contas');
 		$this->load->view('head/head');
 		$this->load->view('menu/principal');
+		$data['turnos'] = $this->m_turnos->listar();
 		$data['contas'] = $this->m_contas->listar();
 		$data['categorias'] = $this->m_categorias->buscaEntradas();
 		$this->load->view('financeiro/registro_entradas',$data);
@@ -23,9 +25,11 @@ class c_secretaria extends CI_Controller {
 	public function registrarSaida()
 	{
 		$this->load->model('m_categorias');
+		$this->load->model('m_turnos');
 		$this->load->model('m_contas');
 		$this->load->view('head/head');
 		$this->load->view('menu/principal');
+		$data['turnos'] = $this->m_turnos->listar();
 		$data['contas'] = $this->m_contas->listar();
 		$data['categorias'] = $this->m_categorias->buscaSaidas();
 		$this->load->view('financeiro/registro_saidas',$data);

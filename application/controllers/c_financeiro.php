@@ -27,8 +27,8 @@ class c_financeiro extends CI_Controller{
         $this->load->model('m_contas');
         $this->load->view('head/head');
         $this->load->view('menu/principal');
-        $data['movimentosDia'] = $this->m_registro_entradas->buscaMovimentosDia($paDia,$paMes,$paAno,False);
-        $data['movimentosMes'] = $this->m_registro_entradas->buscaMovimentosMes($paMes,$paAno,False);
+        $data['movimentosDia'] = $this->m_registro_entradas->buscaMovimentosDia($paDia,$paMes,$paAno);
+        $data['movimentosMes'] = $this->m_registro_entradas->buscaMovimentosMes($paMes,$paAno);
         $data['movimentosPorCategoria'] = $this->m_registro_entradas->buscaMovimentosMesPorCategoria($paMes,$paAno);
         $conId = $this->session->userdata['Conta'];
         $data['conta'] = $this->m_contas->Buscar($conId);
@@ -42,9 +42,11 @@ class c_financeiro extends CI_Controller{
         $this->load->model('m_contas');
         $this->load->view('head/head');
         $this->load->view('menu/principal');
-        $data['movimentosDia'] = $this->m_registro_saidas->buscaMovimentosDia($paDia,$paMes,$paAno,False);
-        $data['movimentosMes'] = $this->m_registro_saidas->buscaMovimentosMes($paMes,$paAno,False);
-        $data['movimentosPorCategoria'] = $this->m_registro_saidas->buscaMovimentosMesPorCategoria($paMes,$paAno,False);
+
+        $data['movimentosDia'] = $this->m_registro_saidas->buscaMovimentosDia($paDia,$paMes,$paAno);
+        $data['movimentosMes'] = $this->m_registro_saidas->buscaMovimentosMes($paMes,$paAno);
+        
+        $data['movimentosPorCategoria'] = $this->m_registro_saidas->buscaMovimentosMesPorCategoria($paMes,$paAno);
         $conId = $this->session->userdata['Conta'];
         $data['conta'] = $this->m_contas->Buscar($conId);
         $this->load->view('financeiro/MovimentoSaidas',$data);
@@ -79,6 +81,7 @@ class c_financeiro extends CI_Controller{
         $data['entradasPorCategoria'] = $this->m_registro_entradas->entradas_totais_por_categoria($mes,$ano,$dia);
         $data['saidas'] = $this->m_registro_saidas->saidas_por_categoria($mes,$ano,$dia);
         $data['saidasPorCategoria'] = $this->m_registro_saidas->saidas_totais_por_categoria($mes,$ano,$dia);
+        
         $this->load->view('financeiro/gerenciador_financeiro_dia',$data);
         $this->load->view('footer/footer');       
     }
@@ -103,6 +106,7 @@ class c_financeiro extends CI_Controller{
         $this->load->model('m_registro_saidas');
         $this->load->view('head/head');
         $this->load->view('menu/principal');
+        $data['turnos'] = $this->m_turnos->listar();
         $data['contas'] = $this->m_contas->listar();
         $data['categorias'] = $this->m_categorias->buscaSaidas();
         $data['saida'] = $this->m_registro_saidas->buscaSaida($id);
@@ -114,24 +118,24 @@ class c_financeiro extends CI_Controller{
     public function salvarsaida($id){
         $this->load->model('m_registro_saidas');
         $this->m_registro_saidas->atualizarSaida($id);
-        header("location:".site_url('c_financeiro/movimentosSaida'));
+        header("location:".site_url('c_financeiro/ralatorioMovimentosSaida'));
     }    
     public function salvarentrada($id){
         $this->load->model('m_registro_entradas');
         $this->m_registro_entradas->atualizarEntrada($id);
-        header("location:".site_url('c_financeiro/movimentos'));
+        header("location:".site_url('c_financeiro/ralatorioMovimentos'));
     }  
 
     public function excluirsaida($id){
         $this->load->model('m_registro_saidas');
         $this->m_registro_saidas->excluirSaida($id);
-        header("location:".site_url('c_financeiro/movimentosSaida'));
+        header("location:".site_url('c_financeiro/ralatorioMovimentosSaida'));
     } 
 
     public function excluirentrada($id){
         $this->load->model('m_registro_entradas');
         $this->m_registro_entradas->excluirEntrada($id);
-        header("location:".site_url('c_financeiro/movimentos'));
+        header("location:".site_url('c_financeiro/ralatorioMovimentos'));
     }
 
     public function editarEntrada($id){
@@ -143,6 +147,7 @@ class c_financeiro extends CI_Controller{
         $this->load->view('menu/principal');
         $data['contas'] = $this->m_contas->listar();
         $data['categorias'] = $this->m_categorias->buscaEntradas();
+        $data['turnos'] = $this->m_turnos->listar();
         $data['entrada'] = $this->m_registro_entradas->buscaEntrada($id);
         $this->load->view('financeiro/editar_entradas',$data);
         $this->load->view('footer/footer');
@@ -160,6 +165,7 @@ class c_financeiro extends CI_Controller{
         $this->load->view('financeiro/gerenciador_financeiro',$data);
         $this->load->view('footer/footer');
     } 
+    
 
     public function gerenciador_financeiro_ano($ano = 0)
     {
@@ -179,8 +185,8 @@ class c_financeiro extends CI_Controller{
 
     public function prospecao($ano = 0)
     {
-        $this->load->model('m_carnes_clientes');
-        $this->load->model('m_carnes_fornecedores');
+        $this->load->model('m_carnes');
+        $this->load->model('m_carnes_empresa');
         $this->load->model('m_registro_entradas');
         $this->load->model('m_registro_saidas');
 
@@ -191,8 +197,8 @@ class c_financeiro extends CI_Controller{
             $ano = date('Y');
         }
         
-        $data['entradas_pr'] = $this->m_carnes_clientes->prospecPorMes($ano);
-        $data['saidas_pr'] = $this->m_carnes_fornecedores->prospecPorMes($ano);
+        $data['entradas_pr'] = $this->m_carnes->prospecPorMes($ano);
+        $data['saidas_pr'] = $this->m_carnes_empresa->prospecPorMes($ano);
 
         $data['entradas_mv'] = $this->m_registro_entradas->entradasPorMes($ano);
         $data['saidas_mv'] = $this->m_registro_saidas->saidasPorMes($ano);
@@ -464,5 +470,93 @@ class c_financeiro extends CI_Controller{
         $data['resumo'] = $this->m_financeiro->resumoPorConta($mes,$ano);
         $this->load->view('financeiro/MovimentosContasMes',$data);
         $this->load->view('footer/footer'); 
+    }
+
+    public function imprimir_relatorio_geral($mes = 0,$ano = 0)
+    {
+        $this->load->model('m_financeiro');
+        $data['entradasPorCategoria'] = $this->m_financeiro->entradas_totais_por_categoria($mes,$ano);
+        $data['saidasPorCategoria'] = $this->m_financeiro->saidas_totais_por_categoria($mes,$ano);
+        $data['resumo'] = $this->m_financeiro->resumoPorConta($mes,$ano);
+        $this->load->library('mpdf');
+        $this->mpdf->mPDF();
+        $this->mpdf->SetHeader('Infox|Relatorio Geral|{DATE d/m/Y}');
+
+        if (!empty($mes)){
+            $this->mpdf->SetFooter('Infox|Relatório '.$mes.'/'.$ano.'|{PAGENO}');
+        }else{
+            $this->mpdf->SetFooter('Infox|Relatório {DATE m/Y} |{PAGENO}');
+        }   
+        $this->mpdf->defaultheaderfontsize=7;
+        $this->mpdf->defaultheaderfontstyle='N';
+        $this->mpdf->defaultheaderline=1;
+        $this->mpdf->defaultfooterfontsize=7;
+        $this->mpdf->defaultfooterfontstyle='';
+        $this->mpdf->defaultfooterline=1  ;
+
+        $html='<h3>Entradas</h3>';
+        $html.= "<table width='100%' style='border-collapse: collapse; border: 1px solid #000; font-family: mono; font-size: 7pt;'>";
+        $html.= "<tr>";
+        $html.= "<th style='border: 1px solid #000;' >Categoria</th>";
+        $html.= "<th style='border: 1px solid #000;' >Valor</th>";
+        $html.= "</tr>";
+        $total = 0;
+        foreach ($data['entradasPorCategoria'] as $row) {
+            $html.= "<tr>";
+            $html.= "<td style='border: 1px solid #000;' >".$row->rcNome."</td>";
+            $html.= "<td style='border: 1px solid #000;text-align:right;' >R$ ".number_format($row->valor,2,',','.')."</td>";
+            $html.= "</tr>";
+            $total += $row->valor;
+        }
+        $html.= "<tr>";
+        $html.= "<th style='border: 1px solid #000;text-align:left;' >total:</th>";
+        $html.= "<th style='border: 1px solid #000;text-align:right;' >R$ ".number_format($total, 2)."</th>";
+        $html.= "</tr>";
+        $html.= "</table>"; 
+
+        $html.='<h3>Saidas</h3>';
+        $html.= "<table width='100%' style='border-collapse: collapse; border: 1px solid #000; font-family: mono; font-size: 7pt;'>";
+        $html.= "<tr>";
+        $html.= "<th style='border: 1px solid #000;' >Categoria</th>";
+        $html.= "<th style='border: 1px solid #000;' >Valor</th>";
+        $html.= "</tr>";
+        $total = 0;
+        foreach ($data['saidasPorCategoria'] as $row) {
+            $html.= "<tr>";
+            $html.= "<td style='border: 1px solid #000;' >".$row->rcNome."</td>";
+            $html.= "<td style='border: 1px solid #000;text-align:right;' >R$ ".number_format($row->valor,2,',','.')."</td>";
+            $html.= "</tr>";
+            $total += $row->valor;
+        }
+        $html.= "<tr>";
+        $html.= "<th style='border: 1px solid #000;text-align:left;' >total:</th>";
+        $html.= "<th style='border: 1px solid #000;text-align:right;' >R$ ".number_format($total, 2)."</th>";
+        $html.= "</tr>";
+        $html.= "</table>";
+
+        $html.='<h3>Resumo Por Conta</h3>';
+        $html.= "<table width='100%' style='border-collapse: collapse; border: 1px solid #000; font-family: mono; font-size: 7pt;'>";
+        $html.= "<tr>";
+        $html.= "<th style='border: 1px solid #000;' >Conta</th>";
+        $html.= "<th style='border: 1px solid #000;' >Entradas</th>";
+        $html.= "<th style='border: 1px solid #000;' >Saidas</th>";
+        $html.= "<th style='border: 1px solid #000;' >Diferença</th>";
+        $html.= "</tr>";
+        $total = 0;
+        foreach ($data['resumo'] as $row) {
+            $html.= "<tr>";
+            $html.= "<td style='border: 1px solid #000;'>".$row->conNome."</td>";
+            $html.= "<td style='border: 1px solid #000;text-align:right;'>R$ ".number_format($row->entradas,2,',','.')."</td>";
+            $html.= "<td style='border: 1px solid #000;text-align:right;'>R$ ".number_format($row->saidas,2,',','.')."</td>";
+            $html.= "<td style='border: 1px solid #000;text-align:right;'>R$ ".number_format($row->entradas - $row->saidas,2,',','.')."</td>";
+            $html.= "</tr>";
+            $total += $row->valor;
+        }
+        $html.= "<tr>";
+        $html.= "</tr>";
+        $html.= "</table>";
+
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output();  
     }
 }

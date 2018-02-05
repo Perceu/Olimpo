@@ -13,7 +13,7 @@ class m_registro_saidas extends CI_Model {
 
         $insert = array(
             'rsDescricao' => $this->input->post('rsDescricao'),
-            'rsValor' => str_replace(",",".",$this->input->post('rsValor')),
+            'rsValor' => str_replace(",",".",str_replace('.','',$this->input->post('rsValor'))),
             'rsData' => implode("-", array_reverse(explode("-", str_replace("/","-",$this->input->post('rsData'))))),
             'rsCategoria' => $this->input->post('rsCategoria'),
             'turId' => $this->input->post('turId'),
@@ -35,9 +35,10 @@ class m_registro_saidas extends CI_Model {
                     FROM registrosaidas 
                     INNER JOIN registrocategorias on registrosaidas.rsCategoria = registrocategorias.rcId
                     inner join contas on registrosaidas.conId = contas.conId
+                    inner join turnos on registrosaidas.turId = turnos.turId
                     WHERE date_format(rsData,'%Y%c%d') = date_format(now(),'%Y%c%d')";
             if ($filtraConta){
-                if ($this->session->userdata['Conta']!=0){
+                if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                     $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                 }
             }
@@ -45,9 +46,10 @@ class m_registro_saidas extends CI_Model {
             $sql = "SELECT * FROM registrosaidas 
                     INNER JOIN registrocategorias on registrosaidas.rsCategoria = registrocategorias.rcId
                     inner join contas on registrosaidas.conId = contas.conId
+                    inner join turnos on registrosaidas.turId = turnos.turId
                     WHERE date_format(rsData,'%Y%c%d') = date_format(\"$ano-$mes-$dia\",'%Y%c%d')";
             if ($filtraConta){
-                if ($this->session->userdata['Conta']!=0){
+                if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                     $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                 }
             }
@@ -64,9 +66,10 @@ class m_registro_saidas extends CI_Model {
             $sql = "SELECT * FROM registrosaidas 
                     INNER JOIN registrocategorias on registrosaidas.rsCategoria = registrocategorias.rcId
                     inner join contas on registrosaidas.conId = contas.conId
-                    WHERE date_format(rsData,'%Y%c') = date_format(now(),'%Y%c')";
+                    inner join turnos on registrosaidas.turId = turnos.turId
+                    WHERE date_format(rsData,'%Y%m') = date_format(now(),'%Y%m')";
             if ($filtraConta){
-                if ($this->session->userdata['Conta']!=0){
+                if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                     $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                 }
             }
@@ -74,9 +77,10 @@ class m_registro_saidas extends CI_Model {
             $sql = "SELECT * FROM registrosaidas 
                     INNER JOIN registrocategorias on registrosaidas.rsCategoria = registrocategorias.rcId
                     inner join contas on registrosaidas.conId = contas.conId
-                    WHERE date_format(rsData,'%Y%c') = date_format(\"$ano-$mes-01\",'%Y%c')";
+                    inner join turnos on registrosaidas.turId = turnos.turId
+                    WHERE date_format(rsData,'%Y%m') = $ano$mes";
             if ($filtraConta){
-                if ($this->session->userdata['Conta']!=0){
+                if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                     $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                 }
             }
@@ -90,12 +94,13 @@ class m_registro_saidas extends CI_Model {
     public function buscaMovimentosMesPorCategoria($mes = 0,$ano = 0, $filtraConta = True){
         $this->load->database();
         if ($mes==0){
-            $sql = "SELECT rcNome, sum(rsValor) as valor,conNome FROM registrosaidas 
+            $sql = "SELECT rcNome, sum(rsValor) as valor, conNome FROM registrosaidas 
                     inner join registrocategorias on registrocategorias.rcId = registrosaidas.rsCategoria
                     inner join contas on registrosaidas.conId = contas.conId
-                    WHERE date_format(rsData,'%m') = date_format(now(),'%m')";
+                    inner join turnos on registrosaidas.turId = turnos.turId
+                    WHERE date_format(rsData,'%Y%m') = date_format(now(),'%Y%m')";
                     if ($filtraConta){
-                        if ($this->session->userdata['Conta']!=0){
+                        if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                             $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                         }
                     }
@@ -103,9 +108,10 @@ class m_registro_saidas extends CI_Model {
             $sql = "SELECT rcNome, sum(rsValor) as valor, conNome FROM registrosaidas 
                     inner join registrocategorias on registrocategorias.rcId = registrosaidas.rsCategoria
                     inner join contas on registrosaidas.conId = contas.conId
+                    inner join turnos on registrosaidas.turId = turnos.turId
                     WHERE date_format(rsData,'%Y%m') = $ano$mes";
                     if ($filtraConta){
-                        if ($this->session->userdata['Conta']!=0){
+                        if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                             $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                         }
                     }
@@ -151,8 +157,9 @@ class m_registro_saidas extends CI_Model {
                     FROM registrosaidas 
                     inner join registrocategorias on registrocategorias.rcId = registrosaidas.rsCategoria
                     inner join contas on registrosaidas.conId = contas.conId
+                    inner join turnos on registrosaidas.turId = turnos.turId
                     WHERE date_format(rsData,'%Y%m%d') = date_format(now(),'%Y%m%d')";
-                    if ($this->session->userdata['Conta']!=0){
+                    if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                         $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                     }
             $sql .=  " group by registrosaidas.rsCategoria,registrosaidas.conId";
@@ -162,8 +169,9 @@ class m_registro_saidas extends CI_Model {
                     FROM registrosaidas 
                     inner join registrocategorias on registrocategorias.rcId = registrosaidas.rsCategoria
                     inner join contas on registrosaidas.conId = contas.conId
+                    inner join turnos on registrosaidas.turId = turnos.turId
                     WHERE date_format(rsData,'%Y%m%d') = $ano$mes$dia";
-                    if ($this->session->userdata['Conta'] != 0){
+                    if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                         $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                     }
             $sql .=  " group by registrosaidas.rsCategoria,registrosaidas.conId";
@@ -178,7 +186,7 @@ class m_registro_saidas extends CI_Model {
                     inner join registrocategorias on registrocategorias.rcId = registrosaidas.rsCategoria
                     inner join contas on registrosaidas.conId = contas.conId                    
                     WHERE date_format(rsData,'%Y%m') = date_format(now(),'%Y%m')";
-                    if ($this->session->userdata['Conta'] != 0){
+                    if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                         $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                     }
                     $sql .= " group by registrosaidas.rsCategoria";
@@ -191,7 +199,7 @@ class m_registro_saidas extends CI_Model {
                 }else{
                     $sql .=" WHERE date_format(rsData,'%Y%m%d') = $ano$mes$dia";
                 }
-                if ($this->session->userdata['Conta'] != 0){
+                if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                     $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                 }
                 $sql .=" group by registrosaidas.rsCategoria";
@@ -202,27 +210,29 @@ class m_registro_saidas extends CI_Model {
     
     public function saidas_por_categoria($mes = 0,$ano = 0, $dia = 0){
         if ($mes==0 and $ano==0 and $dia==0){
-            $sql = "SELECT rcid, rcNome, sum(rsValor) as valor,conNome FROM registrosaidas 
+            $sql = "SELECT rcid, rcNome, sum(rsValor) as valor,conNome,turNome FROM registrosaidas 
                     inner join registrocategorias on registrocategorias.rcId = registrosaidas.rsCategoria
-                    inner join contas on registrosaidas.conId = contas.conId                   
+                    inner join contas on registrosaidas.conId = contas.conId
+                    inner join turnos on registrosaidas.turId = turnos.turId                    
                     WHERE date_format(rsData,'%Y%m') = date_format(now(),'%Y%m')";
-                    if ($this->session->userdata['Conta'] != 0){
+                    if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                         $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                     }
                     $sql .= " group by registrosaidas.rsCategoria,registrosaidas.conId";
         }else{
-            $sql = "SELECT rcid, rcNome, sum(rsValor) as valor,conNome FROM registrosaidas 
+            $sql = "SELECT rcid, rcNome, sum(rsValor) as valor,conNome,turNome FROM registrosaidas 
                 inner join registrocategorias on registrocategorias.rcId = registrosaidas.rsCategoria
-                inner join contas on registrosaidas.conId = contas.conId";
+                inner join contas on registrosaidas.conId = contas.conId
+                inner join turnos on registrosaidas.turId = turnos.turId";
                 if ($dia==0){
                     $sql .=" WHERE date_format(rsData,'%Y%m') = $ano$mes";
                 }else{
                     $sql .=" WHERE date_format(rsData,'%Y%m%d') = $ano$mes$dia";
                 }
-                if ($this->session->userdata['Conta'] != 0){
+                if ($this->session->userdata['Conta'] != 0 and $this->session->userdata['Perfil'] != 0){
                     $sql .= " AND registrosaidas.conId = ".$this->session->userdata['Conta'];
                 }
-                $sql .=" group by registrosaidas.rsCategoria,registrosaidas.conId";
+                $sql .=" group by registrosaidas.rsCategoria,registrosaidas.conId,turnos.turId";
         }
         $return = $this->db->query($sql);
         return $return->result();

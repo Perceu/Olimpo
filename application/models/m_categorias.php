@@ -7,6 +7,7 @@ class m_categorias extends CI_Model {
         $insert = array(
             'rcNome' => $this->input->post('rcNome'),
             'rcSaida' => $this->input->post('rcSaida'),
+            'rcDescontaCaixa' => $this->input->post('rcDescontaCaixa'),
         );
         
         if($this->db->update('registrocategorias',$insert,array('rcId'=>$id))){
@@ -20,6 +21,7 @@ class m_categorias extends CI_Model {
         $insert = array(
             'rcNome' => $this->input->post('rcNome'),
             'rcSaida' => $this->input->post('rcSaida'),
+            'rcDescontaCaixa' => $this->input->post('rcDescontaCaixa'),
         );
         if($this->db->insert('registrocategorias',$insert)){
             return true;    

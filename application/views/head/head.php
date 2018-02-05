@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
-    <title>Olimpo Finan</title>
+    <title>Infox Informatica</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/css/bootstrap.min.css')?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/css/select2.min.css')?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/css/dataTables.bootstrap.min.css')?>">
@@ -17,7 +17,7 @@
 	<script src="<?php echo base_url('public/js/dataTables.bootstrap.min.js')?>"></script> 
 	<script src="<?php echo base_url('public/js/jquery.datetimepicker.js')?>"></script> 
 	<script src="<?php echo base_url('public/js/nicEdit.js')?>"></script> 
-	<script src="<?php echo base_url('public/js/Chart.js')?>"></script> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script> 
 	<script type="text/javascript">
 	  $(document).ready(function(){
 	    $('.dataTables').DataTable();
