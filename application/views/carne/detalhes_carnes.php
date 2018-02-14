@@ -31,6 +31,7 @@
           <th>Data</th>
           <th>valor</th>
           <th>Valor Vencido</th>
+          <th>Entrada</th>
           <th>pago</th>
           <th>ações</th>
         </tr>
@@ -54,6 +55,11 @@
                 echo "<td>".number_format($carne->carValor,2,',','.')."</td>";
                 echo "<td>".number_format($carne->carValorVencido,2,',','.')."</td>";
                 echo "<td>".(($carne->carPago==0)?"Não":"Sim")."</td>";
+                if ($carne->reId){
+                  echo "<td><a href='http://localhost/Olimpo/index.php/c_financeiro/visualizarEntrada/".$carne->reId."'>Visualizar Entrada</a></td>";
+                }else{
+                  echo "<td>Sem entrada registrada</td>";
+                }
                 if ($carne->carPago==0){
                   echo "<td><a href=".site_url('c_carne/registrarPagamento/'.$carne->carId)." class='btn btn-default btn-xs glyphicon glyphicon-usd'></a>";
                   echo "<a href=".site_url('c_carne/editarParcelas/'.$carne->carId)." class='btn btn-default btn-xs tiny glyphicon glyphicon-pencil'></a></td>";

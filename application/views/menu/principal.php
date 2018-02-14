@@ -48,7 +48,6 @@
             <li><a href="<?php echo site_url("c_curso/listar")?>">Cursos</a></li>
             <li><a href="<?php echo site_url("c_alunos/listar")?>">Alunos</a></li>
             <li><a href="<?php echo site_url("c_turno/listar")?>">Turnos</a></li>        
-            <li><a href="<?php echo site_url("c_categorias/listar")?>">Categorias Finaneiro</a></li>        
           </ul>
         </li>
         <li class="dropdown">
@@ -85,6 +84,7 @@
           <ul class="dropdown-menu">
             <li><a href="<?php echo site_url("c_contas/listar")?>">Contas</a></li>
             <li><a href="<?php echo site_url("c_usuarios/listar")?>">Usuarios</a></li>
+            <li><a href="<?php echo site_url("c_categorias/listar")?>">Categorias Finaneiro</a></li>        
             <li class="divider"></li>
             <li><a href="<?php echo site_url("c_financeiro/gerenciador_financeiro")?>">Resumos Mês</a></li>
             <li class="divider"></li>

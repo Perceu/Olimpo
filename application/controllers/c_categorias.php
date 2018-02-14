@@ -15,13 +15,17 @@ class c_categorias extends CI_Controller{
     }
     
     public function cadastrar(){
+        $this->load->model('m_contas');
+        $data['contas'] = $this->m_contas->listar();
         $this->load->view('head/head');
         $this->load->view('menu/principal');
-        $this->load->view('categorias/cadastracategorias');
+        $this->load->view('categorias/cadastracategorias',$data);
         $this->load->view('footer/footer');        
     }
 
     public function editar($id){
+        $this->load->model('m_contas');
+        $data['contas'] = $this->m_contas->listar();
         $this->load->model('m_categorias');
         $data['categorias'] = $this->m_categorias->buscar($id);
         $this->load->view('head/head');

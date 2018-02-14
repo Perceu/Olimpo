@@ -9,11 +9,24 @@ class m_registro_entradas extends CI_Model {
             $conta = $this->session->userdata['Conta'];            
         }
 
-
         $this->load->database();
+        $this->load->model('m_categorias');
+        $categoria = $this->m_categorias->buscar($this->input->post('reCategoria'));
+
+        if ($categoria[0]->conId!=0){
+            $conta = $categoria[0]->conId;
+        }
+
+        $valor = str_replace(",",".",str_replace('.','',$this->input->post('reValor')));
+        
+        if ($categoria[0]->TaxaPagamento!=0){
+            $desconto = ($valor * $categoria[0]->TaxaPagamento)/100;
+            $valor = $valor - $desconto;
+        }
+
         $insert = array(
             'reDescricao' => $this->input->post('reDescricao'),
-            'reValor' => str_replace(",",".",str_replace('.','',$this->input->post('reValor'))),
+            'reValor' => $valor,
             'reData' => implode("-", array_reverse(explode("-", str_replace("/","-",$this->input->post('reData'))))),
             'reCategoria' => $this->input->post('reCategoria'),
             'turId' => $this->input->post('turId'),
