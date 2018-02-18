@@ -16,7 +16,9 @@ class c_categorias extends CI_Controller{
     
     public function cadastrar(){
         $this->load->model('m_contas');
+        $this->load->model('m_categorias');
         $data['contas'] = $this->m_contas->listar();
+        $data['list_categorias'] = $this->m_categorias->buscaSaidas();
         $this->load->view('head/head');
         $this->load->view('menu/principal');
         $this->load->view('categorias/cadastracategorias',$data);
@@ -25,9 +27,12 @@ class c_categorias extends CI_Controller{
 
     public function editar($id){
         $this->load->model('m_contas');
-        $data['contas'] = $this->m_contas->listar();
         $this->load->model('m_categorias');
+
+        $data['contas'] = $this->m_contas->listar();
         $data['categorias'] = $this->m_categorias->buscar($id);
+        $data['list_categorias'] = $this->m_categorias->buscaSaidas();
+        
         $this->load->view('head/head');
         $this->load->view('menu/principal');
         $this->load->view('categorias/editacategorias',$data);

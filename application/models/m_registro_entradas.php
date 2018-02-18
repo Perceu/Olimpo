@@ -11,6 +11,7 @@ class m_registro_entradas extends CI_Model {
 
         $this->load->database();
         $this->load->model('m_categorias');
+        $this->load->model('m_registro_saidas');
         $categoria = $this->m_categorias->buscar($this->input->post('reCategoria'));
 
         if ($categoria[0]->conId!=0){
@@ -20,8 +21,16 @@ class m_registro_entradas extends CI_Model {
         $valor = str_replace(",",".",str_replace('.','',$this->input->post('reValor')));
         
         if ($categoria[0]->TaxaPagamento!=0){
-            $desconto = ($valor * $categoria[0]->TaxaPagamento)/100;
-            $valor = $valor - $desconto;
+            $valorSaida = ($valor * $categoria[0]->TaxaPagamento)/100;
+            $saida = array(
+                'rsDescricao' => 'Registro Automatico',
+                'rsValor' => $valorSaida,
+                'rsData' => implode("-", array_reverse(explode("-", str_replace("/","-",$this->input->post('reData'))))),
+                'rsCategoria' => $categoria[0]->rcIdTaxa,
+                'turId' => $this->input->post('turId'),
+                'conId' => $conta,
+            );
+            $this->m_registro_saidas->registrarSaidaForArray($saida);
         }
 
         $insert = array(

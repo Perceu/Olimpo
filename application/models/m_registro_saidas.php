@@ -26,6 +26,16 @@ class m_registro_saidas extends CI_Model {
             return false;    
         }
     }
+
+    public function registrarSaidaForArray($insert){
+        $this->load->database();
+               
+        if($this->db->insert('registrosaidas',$insert)){
+            return true;    
+        }else{
+            return false;    
+        }
+    }
     
     public function buscaMovimentosDia($dia = 0, $mes = 0, $ano = 0, $filtraConta = True)
     {

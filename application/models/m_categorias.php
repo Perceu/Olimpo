@@ -10,6 +10,7 @@ class m_categorias extends CI_Model {
             'rcDescontaCaixa' => $this->input->post('rcDescontaCaixa'),
             'conId' => $this->input->post('conId'),
             'TaxaPagamento' => $this->input->post('TaxaPagamento'),
+            'rcIdTaxa' => $this->input->post('rcIdTaxa'),
         );
         
         if($this->db->update('registrocategorias',$insert,array('rcId'=>$id))){
@@ -26,6 +27,7 @@ class m_categorias extends CI_Model {
             'rcDescontaCaixa' => $this->input->post('rcDescontaCaixa'),
             'conId' => $this->input->post('conId'),
             'TaxaPagamento' => $this->input->post('TaxaPagamento'),
+            'rcIdTaxa' => $this->input->post('rcIdTaxa'),
         );
         if($this->db->insert('registrocategorias',$insert)){
             return true;    
