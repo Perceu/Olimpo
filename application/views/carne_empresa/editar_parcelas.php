@@ -10,19 +10,19 @@
         <div class="row">
         <div class="form-group col-md-12">
             <label for="nome">Vencimento</label>
-            <input type="text" class="form-control tpData" name="carVencimento" value="<?php echo date('d/m/Y',strtotime($parcela[0]->ecVencimento)) ?>" id="nome" placeholder="Nome" autofocus>
+            <input type="text" class="form-control tpData" name="ecVencimento" value="<?php echo date('d/m/Y',strtotime($parcela[0]->ecVencimento)) ?>" id="nome" placeholder="Nome" autofocus>
         </div> 
         <div class="form-group col-md-12">
             <label for="nome">Numero Parcela</label>
-            <input type="text" class="form-control" name="carParcela" value="<?php echo $parcela[0]->ecParcela ?>" id="nome" placeholder="Nome" autofocus>
+            <input type="text" class="form-control" name="ecParcela" value="<?php echo $parcela[0]->ecParcela ?>" id="nome" placeholder="Nome" autofocus>
         </div>          
         <div class="form-group col-md-12">
             <label for="nome">Valor</label>
-            <input type="text" class="form-control" name="carValor" value="<?php echo $parcela[0]->ecValor ?>" id="nome" placeholder="Nome" autofocus>
+            <input type="text" class="form-control" name="ecValor" value="<?php echo $parcela[0]->ecValor ?>" id="nome" placeholder="Nome" autofocus>
         </div>        
         <div class="form-group col-md-12">
             <label for="nome">Valor Vencido</label>
-            <input type="text" class="form-control" name="carValorVencido" value="<?php echo $parcela[0]->ecValorVencido ?>" id="nome" placeholder="Nome" autofocus>
+            <input type="text" class="form-control" name="ecValorVencido" value="<?php echo $parcela[0]->ecValorVencido ?>" id="nome" placeholder="Nome" autofocus>
         </div>
         </div>
         <a href="<?php echo site_url("c_carne_empresa/gerenciador")?>" class="btn btn-default">Cancelar</a>

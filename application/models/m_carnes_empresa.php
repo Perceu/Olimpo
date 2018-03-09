@@ -46,10 +46,10 @@ class m_carnes_empresa extends CI_Model {
     public function salvarParcela($id){
         $this->load->database();
         $insert = array(
-            'ecValor' => preg_replace(',', '.', $this->input->post('ecValor')),
+            'ecValor' => str_replace(',', '.', $this->input->post('ecValor')),
             'ecVencimento' => implode("-", array_reverse(explode("-", str_replace("/","-",$this->input->post('ecVencimento'))))),
             'ecParcela' => $this->input->post('ecParcela'),
-            'ecValorVencido' => preg_replace(',', '.', $this->input->post('ecValorVencido')),
+            'ecValorVencido' => str_replace(',', '.', $this->input->post('ecValorVencido')),
         );
         
         if($this->db->update('empresas_carnes',$insert,array('ecId'=>$id))){

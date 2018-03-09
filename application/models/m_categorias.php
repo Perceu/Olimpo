@@ -21,12 +21,17 @@ class m_categorias extends CI_Model {
     }
     public function gravar(){
         $this->load->database();
+        $taxa = $this->input->post('TaxaPagamento');
+        if(empty($taxa)){
+            $taxa = 0;
+        }
+
         $insert = array(
             'rcNome' => $this->input->post('rcNome'),
             'rcSaida' => $this->input->post('rcSaida'),
             'rcDescontaCaixa' => $this->input->post('rcDescontaCaixa'),
             'conId' => $this->input->post('conId'),
-            'TaxaPagamento' => $this->input->post('TaxaPagamento'),
+            'TaxaPagamento' => $taxa,
             'rcIdTaxa' => $this->input->post('rcIdTaxa'),
         );
         if($this->db->insert('registrocategorias',$insert)){
