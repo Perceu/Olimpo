@@ -2,7 +2,7 @@ ALTER TABLE `empresas_carnes`
 CHANGE COLUMN `rsId` `rsId` INT(11) NOT NULL DEFAULT 0 ;
 
 ALTER TABLE `empresas_carnes` 
-CHANGE COLUMN `rsId` `ecPago` INT(11) NOT NULL DEFAULT 0 ;
+CHANGE COLUMN `ecPago` `ecPago` INT(11) NOT NULL DEFAULT 0 ;
 
 ALTER TABLE `Infox`.`registrocategorias` 
 ADD COLUMN `conId` INT NOT NULL DEFAULT 0 AFTER `rcDescontaCaixa`;

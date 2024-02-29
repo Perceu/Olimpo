@@ -1,0 +1,17 @@
+services:
+  olimpo:
+    image: php:5.6-apache
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/var/www/html/Olimpo
+
+  db:
+    image: mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: senhafraca123
+      MARIADB_DATABASE: Infox
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
