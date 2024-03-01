@@ -1,6 +1,7 @@
 services:
   olimpo:
-    image: php:5.6-apache
+    build: 
+      dockerfile: php.dockerfile
     ports:
       - 8080:80
     volumes:
